@@ -68,7 +68,7 @@ app.delete("/api/notes/:id", function(id, res) {
   let noteList = require("./db.json");
   let index = noteList.findIndex( note => note.id === Number(id.params.id));
     noteList.splice(index, 1);
-  fs.writeFile("./Develop/db/db.json",JSON.stringify(noteList,null,4), function(err,notes) {
+  fs.writeFile("./db.json",JSON.stringify(noteList,null,4), function(err,notes) {
     if(err) {
       throw err;
     }else {
