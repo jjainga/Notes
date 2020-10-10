@@ -6,7 +6,7 @@ let fs = require("fs");
 // Sets up the Express App
 // =============================================================
 let app = express();
-let PORT = 3000;
+let PORT = process.env.PORT || 3000;
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -26,7 +26,7 @@ app.get("/notes", function(req, res) {
 
 //Gets data from JSON file
 app.get("/api/notes", function(req,res) {
-  fs.readFile("./Develop/db/db.json",'utf8', function(err,notes) {
+  fs.readFile("./db.json",'utf8', function(err,notes) {
     if (err) {
       throw err;
     }else {
@@ -39,7 +39,7 @@ app.get("/api/notes", function(req,res) {
 app.get("/api/notes/:id", function(req, res) {
   var chosen = Number(req.params.id);
   console.log(chosen);
-  let notes = require("./Develop/db/db.json")
+  let notes = require("./db.json")
   console.log(notes);
   for (var i = 0; i < notes.length; i++) {
     if (chosen === notes[i].id) {
@@ -52,11 +52,11 @@ app.get("/api/notes/:id", function(req, res) {
 
 // // Create new note and post to the DB
 app.post("/api/notes", function(data, res) {
-  let noteList = require("./Develop/db/db.json");
+  let noteList = require("./db.json");
   //Creating a random id
   data.body.id = Math.floor(Math.random()*9999999)
   noteList.push(data.body);
-  fs.writeFile("./Develop/db/db.json",JSON.stringify(noteList,null,4), function(err,notes) {
+  fs.writeFile("./db.json",JSON.stringify(noteList,null,4), function(err,notes) {
     if(err) {
       throw err;
     }else {
@@ -65,7 +65,7 @@ app.post("/api/notes", function(data, res) {
 });
 
 app.delete("/api/notes/:id", function(id, res) {
-  let noteList = require("./Develop/db/db.json");
+  let noteList = require("./db.json");
   let index = noteList.findIndex( note => note.id === Number(id.params.id));
     noteList.splice(index, 1);
   fs.writeFile("./Develop/db/db.json",JSON.stringify(noteList,null,4), function(err,notes) {
