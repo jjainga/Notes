@@ -65,10 +65,8 @@ app.post("/api/notes", function(data, res) {
 });
 
 app.delete("/api/notes/:id", function(id, res) {
-        console.log(id.params.id);
   let noteList = require("./Develop/db/db.json");
   let index = noteList.findIndex( note => note.id === Number(id.params.id));
-        console.log(index);
     noteList.splice(index, 1);
   fs.writeFile("./Develop/db/db.json",JSON.stringify(noteList,null,4), function(err,notes) {
     if(err) {
