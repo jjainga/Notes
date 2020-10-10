@@ -35,28 +35,47 @@ app.get("/api/notes", function(req,res) {
   })
 })
 
+// Displays a single notes, or shows "No note found"
+app.get("/api/notes/:id", function(req, res) {
+  var chosen = Number(req.params.id);
+  console.log(chosen);
+  let notes = require("./Develop/db/db.json")
+  console.log(notes);
+  for (var i = 0; i < notes.length; i++) {
+    if (chosen === notes[i].id) {
+      return res.json(notes[i]);
+    }
+  }
+  return res.send("No notes found");
+});
+
 
 // // Create new note and post to the DB
 app.post("/api/notes", function(data, res) {
   let noteList = require("./Develop/db/db.json");
+  //Creating a random id
+  data.body.id = Math.floor(Math.random()*9999999)
   noteList.push(data.body);
   fs.writeFile("./Develop/db/db.json",JSON.stringify(noteList,null,4), function(err,notes) {
     if(err) {
       throw err;
     }else {
-      fs.readFile("./Develop/db/db.json",'utf8', function(err,notes) {
-        if (err) {
-          throw err;
-        }else {
-          res.json(JSON.parse(notes));
-        }
-      })
+      res.json(true)
   }})
-  
-  
 });
 
-app.delete("api/notes", function(req, res) {
+app.delete("/api/notes/:id", function(id, res) {
+        console.log(id.params.id);
+  let noteList = require("./Develop/db/db.json");
+  let index = noteList.findIndex( note => note.id === Number(id.params.id));
+        console.log(index);
+    noteList.splice(index, 1);
+  fs.writeFile("./Develop/db/db.json",JSON.stringify(noteList,null,4), function(err,notes) {
+    if(err) {
+      throw err;
+    }else {
+       res.json(true)
+  }})
 
 })
 
