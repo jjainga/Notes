@@ -57,6 +57,7 @@ const handleNoteSave = function () {
   };
 
   saveNote(newNote).then(() => {
+    console.log("Hello world")
     getAndRenderNotes();
     renderActiveNote();
   });
@@ -103,6 +104,7 @@ const handleRenderSaveBtn = function () {
 
 // Render's the list of note titles
 const renderNoteList = (notes) => {
+  console.log(notes);
   $noteList.empty();
 
   const noteListItems = [];
@@ -149,3 +151,4 @@ $noteText.on("keyup", handleRenderSaveBtn);
 
 // Gets and renders the initial list of notes
 getAndRenderNotes();
+
